@@ -32,8 +32,10 @@ frappe.ui.form.Sidebar = Class.extend({
 
 		this.make_tags();
 		this.make_like();
-		this.make_follow();
-
+		this.document_follow_enabled = frappe.boot.user.document_follow_notify;
+		if(this.document_follow_enabled){
+			this.make_follow();
+		}
 		this.bind_events();
 		frappe.ui.form.setup_user_image_event(this.frm);
 
@@ -64,7 +66,9 @@ frappe.ui.form.Sidebar = Class.extend({
 			this.frm.assign_to.refresh();
 			this.frm.attachments.refresh();
 			this.frm.shared.refresh();
-			this.frm.follow.refresh();
+			if(this.document_follow_enabled){
+				this.frm.follow.refresh();
+			}
 			this.frm.viewers.refresh();
 			this.frm.tags && this.frm.tags.refresh(this.frm.doc._user_tags);
 			this.sidebar.find(".modified-by").html(__("{0} edited this {1}",
